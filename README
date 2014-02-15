@@ -1,4 +1,4 @@
-This repository contains all demo code is used 
+This repository contains all demo code which is used 
 for a training course i gave for a quick overview
 of HTML5 for developers who are new to HTML5.
 
@@ -8,7 +8,7 @@ for plain HTML5 like the new tags available in the
 markup. 
 
 Most of this code is just to demo some special 
-API of feature so i tried to keep the demos on a
+API or feature so i tried to keep the demos on a
 small size and avoided external script files where 
 it was possible. 
 
