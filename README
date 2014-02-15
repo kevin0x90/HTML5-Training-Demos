@@ -1,0 +1,16 @@
+This repository contains all demo code is used 
+for a training course i gave for a quick overview
+of HTML5 for developers who are new to HTML5.
+
+The main focus of the demos are the new Javascript
+APIs available in HTML5. But there are also demos 
+for plain HTML5 like the new tags available in the 
+markup. 
+
+Most of this code is just to demo some special 
+API of feature so i tried to keep the demos on a
+small size and avoided external script files where 
+it was possible. 
+
+I think i will do some refactoring of the demos 
+in the near feature to make them more cleaner.
