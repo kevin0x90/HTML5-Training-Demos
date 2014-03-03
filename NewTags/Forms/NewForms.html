@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>New Forms</title>	
+		<style type="text/css">
+			html body {
+				margin: 0px;
+				width: 100%;
+				height: 100%;			
+			}		
+		
+			.control {
+				margin-bottom: 2%;
+				display: block;			
+			}		
+			.progressbar {
+				padding: 0%;			
+			}		
+		
+			.progressbarLabel {
+				position: relative;		
+				top: 50%;						
+				left: 50%;
+				z-index: 9;				
+				display: inline;																			
+			}
+			
+			#progBar {
+				position: absolute;
+				left: 0%;
+				top: 30%;
+			}
+		</style>
+		<script type="text/javascript">				
+      (function () {
+        "use strict";
+
+        window.addEventListener("load", function() {
+          var birthdateControl = document.getElementById("birthdate"),
+            progressBar = document.querySelector(".progressbar progress"),
+            progressBarLabel = document.querySelector(".progressbarLabel output"),
+            fillPercentAnimation;
+          console.log(birthdateControl.accessKeyLabel);				
+          
+          fillPercentAnimation = setInterval(function() {
+            if(progressBar.value >= 100) {
+              clearInterval(fillPercentAnimation);					
+            }
+            
+            progressBar.value = progressBar.value + 1;
+            progressBarLabel.firstChild.nodeValue = progressBar.value;  
+          }, "1000");								
+        }, false);								
+      }());
+		</script>
+	</head>
+	<body>
+		<form name="myForm" id="myForm">
+			<div class="control">
+				<label for="bonus">Bonus:</label>
+				<input id="bonus" type="range" min="3000" max="10000" step="10"
+					value="3000" onchange="bonusOutput.value=value"></input>
+				<output id="bonusOutput">3000</output>
+			</div>
+			<div class="control">
+				<label for="birthdate">Birthdate:</label>
+				<input accesskey="b" id="birthdate" type="date" placeholder="dd.mm.yyyy"></input>		
+			</div>
+			<div class="control">
+				<label for="tel">Tel:</label>
+				<input type="text" required="true" 
+					autofocus="true" id="tel"  
+					list="telephoneNumbers" 
+					placeholder="max 5 char number" 
+					pattern="\d{3,5}" spellcheck="false"></input>
+				<datalist id="telephoneNumbers">
+					<option value="041043843" label="tester xyz" />
+					<option value="908984355" label="marcus herman" />	
+					<option value="879878788" label="tobias herdt" />			
+				</datalist>			
+			</div>			
+			<div class="control" id="progBar">						
+				<div class="progressbar">
+					<span class="progressbarLabel">
+						<output>25</output>
+					</span>
+					<progress value="25" max="100"></progress>
+				</div>			
+			</div>
+			<p dir="rtl">Hello again</p>
+			<div class="control">
+				<!-- formnovalidate="true" -->
+				<button>Save</button>			
+			</div>
+		</form>
+	</body>
+</html>

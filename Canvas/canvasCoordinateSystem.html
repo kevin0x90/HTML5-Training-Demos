@@ -1,0 +1,283 @@
+<!Doctype html>
+<html>
+  <head>
+    <title>Canvas drawing a coordinate system.</title>
+    <style type="text/css">
+      #canvas {
+        border: 1px solid black;
+      }
+    </style>
+    <script type="text/javascript">
+      (function () {
+        "use strict";
+        window.addEventListener("load", function () {
+            var canvasElement = document.getElementById("canvas"),
+              drawingContext = null,
+              coordinateConfiguration =
+                new coordinateSystemConfiguration(
+                  30,
+                  canvasElement,
+                  10,
+                  5
+                ),
+              zeroPoint = {
+                x: coordinateConfiguration.getLeftMargin(),
+                y: coordinateConfiguration.getTopMargin() +
+                    (coordinateConfiguration.getYAxis().getAxisSpacerSpace() *
+                      coordinateConfiguration.getYAxis().getAxisSpacer() - 2
+                    ) -
+                      coordinateConfiguration.getYAxis().getAxisSpacerSpace()
+              };
+          
+            try {
+              drawingContext = initializeCanvasDrawingContext(canvasElement);
+            } catch (err) {
+              alert(err);
+            }
+          
+            drawingContext.translate(canvasElement.width, 0);
+            drawingContext.rotate(Math.PI / 180 * 90);
+          
+            drawingContext.beginPath();
+            drawingContext.lineWidth = 2.0;
+          
+            drawCoordinateSystem(drawingContext, coordinateConfiguration);
+            drawingContext.moveTo(zeroPoint.x, zeroPoint.y);
+            drawingContext.lineTo(coordinateConfiguration.getRightMargin(),
+              coordinateConfiguration.getTopMargin()
+            );
+          
+            drawingContext.stroke();
+            drawingContext.closePath();
+        }, false);
+
+        /*
+         * Initialize a canvas drawing context
+         * and raise an error if something goes wrong.
+         */
+        function initializeCanvasDrawingContext(canvasElement) {
+          if (domElementIsNotNull(canvasElement)) {
+            var drawingContext = null;
+
+            try {
+              drawingContext = intializeCanvas2DContext(canvasElement);
+            } catch (err) {
+              throw err;
+            }
+          }
+          return drawingContext;
+        }
+
+        /*
+         * Check if a DOM element is not null.
+         */
+        function domElementIsNotNull(domElement) {
+          return !domElementIsNull(domElement);
+        }
+
+        /*
+         * Check if a DOM element is null.
+         */
+        function domElementIsNull(domElement) {
+          if (domElement === null) {
+            return true;
+          }
+          return false;
+        }
+
+        /*
+         * Initialize a canvas 2d context.
+         */
+        function intializeCanvas2DContext(canvasElement) {
+          var canvas2dContext = null;
+          if (canvasElement.getContext) {
+            canvas2dContext = canvasElement.getContext("2d");
+          } else {
+            throw "canvas 2d context could not be initialized !";
+          }
+          return canvas2dContext;
+        }
+
+        /*
+         * Class that holds the configuration for 
+         * a coordinate system. 
+         */
+        function coordinateSystemConfiguration(margin, canvasElement,
+          spacers, spacerLength) {
+            var me = this,
+              margin = margin,
+              _topMargin = margin,
+              _leftMargin = margin,
+              _rightMargin = canvasElement.width - margin,
+              _bottomMargin = canvasElement.height - margin,
+              xAxis = new axisConfiguration(_rightMargin,
+                spacers, spacerLength
+              ),
+              yAxis = new axisConfiguration(_bottomMargin,
+                spacers, spacerLength
+              );
+
+            me.getMargin = function() {
+              return _margin;
+            };
+
+            me.getTopMargin = function() {
+              return _topMargin;
+            };
+
+            me.getLeftMargin = function() {
+              return _leftMargin;
+            };
+
+            me.getRightMargin = function() {
+              return _rightMargin;
+            };
+
+            me.getBottomMargin = function() {
+              return _bottomMargin;
+            };
+
+            me.getXAxis = function() {
+             return xAxis;
+            };
+
+            me.getYAxis = function() {
+              return yAxis;
+            };
+        }
+
+        /*
+         * Class that holds the configuration for 
+         * a single axis. 
+         */
+        function axisConfiguration(overallLength, numberOfSpacers,
+          spacerLength) {
+
+            var me = this,
+              axisLength = overallLength,
+              axisSpacer = numberOfSpacers,
+              axisSpacerLength = spacerLength,
+              axisSpacerSpace = axisLength / axisSpacer;
+
+            me.getAxisLength = function() {
+              return axisLength;
+            };
+
+            me.setAxisLength = function(newAxisLengh) {
+              axisLength = newAxisLengh;
+            };
+
+            me.getAxisSpacer = function() {
+              return axisSpacer;
+            };
+
+            me.setAxisSpacer = function(numberOfAxisSpacer) {
+              axisSpacer = numberOfAxisSpacer;
+            };
+
+            me.getAxisSpacerLength = function() {
+              return axisSpacerLength;
+            };
+
+            me.setAxisSpacerLength = function(newAxisSpacerLength) {
+              axisSpacerLength = newAxisSpacerLength;
+            };
+
+            me.getAxisSpacerSpace = function() {
+              return axisSpacerSpace;
+            };
+        }
+
+        /*
+         * Draw the coordinate system with a 
+         * given configuration.
+         */
+        function drawCoordinateSystem(drawingContext, configuration) {
+          var yAxis = configuration.getYAxis(),
+            xAxis = configuration.getXAxis();
+
+          drawYAxis(drawingContext, configuration.getLeftMargin(),
+            configuration.getTopMargin(), yAxis.getAxisSpacer(),
+              yAxis.getAxisSpacerSpace()
+          );
+
+          drawXAxis(drawingContext, configuration.getLeftMargin(),
+            configuration.getTopMargin(), configuration.getRightMargin(),
+              xAxis.getAxisSpacer(), xAxis.getAxisSpacerSpace(),
+                yAxis.getAxisSpacer(), yAxis.getAxisSpacerSpace()
+          );
+        }
+
+        /*
+         * Draw the y axis of the coordinate system.
+         */
+        function drawYAxis(drawingContext, leftMargin, topMargin,
+          yAxisSpacer, yAxisSpacerSpace) {
+          
+          var i,
+            x,
+            y,
+            currentLabelText;
+            
+          drawingContext.fillText("y axis", leftMargin / 2, topMargin / 2);
+          drawingContext.moveTo(leftMargin, topMargin);
+
+          for (i = 0; i < yAxisSpacer; i += 1) {
+            y = topMargin + yAxisSpacerSpace * i;
+            x = leftMargin;
+            currentLabelText = {
+              Text: yAxisSpacer - i,
+              X: (x / 2) / 2
+            };
+
+            drawingContext.lineTo(x, y);
+            drawingContext.lineTo(x / 2, y);
+            drawingContext.lineTo(x + x / 2, y);
+            drawingContext.moveTo(x, y);
+
+            drawingContext.fillText(currentLabelText.Text,
+              currentLabelText.X, y
+            );
+          }
+        }
+
+        /*
+         * Draw the x axis of the coordinate system.
+         */
+        function drawXAxis(drawingContext, leftMargin, topMargin, 
+          rightMargin, xAxisSpacer, xAxisSpacerSpace,
+          yAxisSpacer, yAxisSpacerSpace) {
+          
+          var i,
+            x,
+            y,
+            currentLabelText;
+
+          drawingContext.fillText("x axis", rightMargin,
+          topMargin + yAxisSpacerSpace * (yAxisSpacer - 1));
+
+          for (i = 0; i < xAxisSpacer; i++) {
+            x = leftMargin + xAxisSpacerSpace * i;
+            y = topMargin + yAxisSpacerSpace * (yAxisSpacer - 1);
+            currentLabelText = {
+              Text: i + 1,
+              Y: y + topMargin
+            };
+
+            drawingContext.lineTo(x, y);
+            drawingContext.lineTo(x, y - (topMargin / 2));
+            drawingContext.lineTo(x, y + (topMargin / 2));
+            drawingContext.lineTo(x, y);
+
+            drawingContext.fillText(currentLabelText.Text, x,
+              currentLabelText.Y
+            );
+          }
+        }
+      }());
+    </script>
+  <head>
+  <body>
+    <canvas id="canvas" width="500" height="500" />
+  </body>
+</html>

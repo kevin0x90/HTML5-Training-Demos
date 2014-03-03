@@ -1,0 +1,53 @@
+New Doctype for HTML 5 pages: 
+<!DOCTYPE html>
+
+The new semantic tags: 
+<nav>
+
+<article>
+
+<section>
+
+<aside>
+
+<hgroup>
+
+<header>
+
+<footer>
+
+<time>
+
+<mark>
+
+Benefits of the new semantic tags: 
+better readability easier to style cause there is no need 
+for creating things like this for example:
+<div class="section"></div>
+better accessability eg screen readers can interpret 
+the content better.
+
+The new semantic tags where build on a statistic
+which are the most common class names for meaningless
+tags like div span etc.
+
+example usage: 
+<section>
+  <header>News Today</header>
+    <article>
+      <header>New research on power sources</header>
+      <!--  -->
+    </article>
+  <footer>
+    <section>
+      <header>Comments</header>
+            <!-- for example markup for a comment section -->
+    </section>
+    <section>
+      <header>Impressum</header>
+      <!-- for example Impressum markup -->
+    </section>
+  </footer>
+</section>
+
+

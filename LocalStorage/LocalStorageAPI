@@ -1,0 +1,35 @@
+LocalStorage is application bound so just the origin application
+has access to the localStored data. The origin is identified by 
+the domain eg <http://lumesse.com/> just scripts from the 
+domain lumesse.com are able to access the local stored data.
+
+The localStorage obect offers the following methods
+to access local stored <key ,value> pairs: 
+
+[the saved value] getItem([key of the saved data])
+(
+Alternate Syntax:
+[value] localStorage[[key]]
+)
+Description:
+Returns a saved value from the storage which matches
+the given key.
+
+[void] setItem([key to identifie the saved data], [the data to save])
+(
+Alternate Syntax: 
+localStorage[[key]] = [value]
+)
+Description:
+Adds a value to the localStorage which can be identified 
+by its key.
+
+[void] removeItem([key of the data to delete])
+Description:
+Removes the item from the localStorage which matches 
+the given key.
+
+[void] clear([void])
+Description: 
+Clears the complete localStorage.
+

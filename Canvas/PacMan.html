@@ -1,0 +1,52 @@
+<!Doctype html>
+<html>
+	<head>
+		<title>Pacman</title>
+		<style type="text/css">
+			#canvas {
+				width: 60%;
+				height: 60%;			
+				border: 2px solid black;
+			}
+		</style>
+		<script type="text/javascript">
+      (function () {
+        "use strict";
+        window.addEventListener("load", function () {
+          var drawingCanvas = document.getElementById("canvas"),
+            drawingContext = drawingCanvas.getContext("2d"), 
+            radius = 20, 
+            part1Start = 45, 
+            part2Start = 320,
+            oneDegreeInRadian = Math.PI / 180,
+            drawPacMan = function () {
+
+              // Draw the first part of pac man: 
+              drawingContext.beginPath();
+              drawingContext.clearRect(-radius, radius, radius, radius);
+              drawingContext.arc(0, 0, radius, oneDegreeInRadian * part1Start, 
+                oneDegreeInRadian * 225, false);
+              drawingContext.fill();
+              drawingContext.closePath();
+
+              // Draw the second part of pac man: 
+              drawingContext.beginPath();
+              drawingContext.arc(0, 0, radius, oneDegreeInRadian * 145, 
+                oneDegreeInRadian * part2Start, false);
+              drawingContext.fill();
+              drawingContext.closePath();
+            };            
+                  
+          drawingContext.translate(drawingCanvas.width / 2,
+            drawingCanvas.height / 2);
+          drawingContext.fillStyle = "yellow";
+
+          drawPacMan();  
+        }, false);
+      }());
+		</script>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>		
+	</body>
+</html>

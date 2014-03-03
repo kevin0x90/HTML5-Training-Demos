@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Message API</title>
+  </head>
+  <body>
+    <section id="employees"></section>
+    <button id="addEmployeesButton">Add Employees</button>
+    <script type="text/javascript">
+      (function () {
+        "use strict";
+
+        function openSearchWindow() {
+          var windowURL = "http://localhost/MessageAPI/PopUp.html";
+          window.open(windowURL);
+        }
+
+        function fillTemplate(template, valueMapping) {
+          var processedTemplate = template,
+            mapProperty,
+            processedTemplate;
+          for (mapProperty in valueMapping) {
+            if (valueMapping.hasOwnProperty(mapProperty)) {
+              processedTemplate = processedTemplate.replace(
+                mapProperty, valueMapping[mapProperty]);
+            }
+          }
+          return processedTemplate;
+        }
+
+        function addEmployeeToEmployeesList(employee) {
+          var employeeTemplate = 
+            '<div id="{{PID}}" class="employee">' + 
+              '<span class="empName">{{LastName}}, {{FirstName}}</span>' +
+              '<span class="empPosition">{{Position}}</span>' +
+            '</div>',
+            employeeMarkup = fillTemplate(employeeTemplate, {
+              "{{PID}}": employee.PID,
+              "{{LastName}}": employee.LastName,
+              "{{FirstName}}": employee.FirstName,
+              "{{Position}}": employee.Position
+            });
+          console.log(employeeMarkup);
+        }
+
+        function handleSearchDialogMessage(eventParam) {
+          var employee = JSON.parse(eventParam.data);
+          console.log(eventParam.origin);
+          addEmployeeToEmployeesList(employee);
+        }
+
+        window.addEventListener("load", function() {
+          var addEmployeesButton = 
+            document.getElementById("addEmployeesButton");
+          addEmployeesButton.addEventListener("click",
+            openSearchWindow, false);
+          addEventListener("message", handleSearchDialogMessage, false);
+        }, false);
+
+      }());
+    </script>
+  </body>
+</html>

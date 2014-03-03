@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Editable Element Content</title>
+		<style type="text/css">		
+			html, body {
+				width: 99%;			
+			}		
+			
+			.editableContent {
+				width: 100%;
+				height: 100%;			
+			}
+			
+			#editableTable {
+				width: 100%;			
+			}
+			
+			#addRow {
+				margin-top: 5%;			
+			}
+
+		</style>
+	</head>
+	<body>
+		<table id="editableTable" border="1">			
+			<colgroup>
+				<col style="width: 25%;" />
+				<col style="width: 25%;" />
+				<col style="width: 25%;" />
+				<col style="width: 25%;" />			
+			</colgroup>								
+			<thead>
+				<tr>
+					<th>Column 1</th>
+					<th>Column 2</th>
+					<th>Column 3</th>
+					<th>Column 4</th>
+				</tr>			
+			</thead>	
+			<tbody>
+				<tr>
+					<td>
+						<span class="editableContent">Test 1</span>				
+					</td>
+					<td>
+						<span class="editableContent">Test 2</span>				
+					</td>
+					<td>
+						<span class="editableContent">Test 3</span>				
+					</td>
+					<td>
+						<span class="editableContent">Test 4</span>				
+					</td>			
+				</tr>		
+			</tbody>	
+		</table>
+		<button id="addRow" name="addRow">Add Row</button>
+		<script type="text/javascript">
+      (function () {
+        "use strict";
+
+        window.addEventListener("load", function() {														
+          var editableTable = document.getElementById("editableTable"), 
+            rowTemplate, 
+            table = new Table(editableTable), 
+            addRowButton = document.getElementById("addRow");
+
+          makeElementsEditable(".editableContent");
+          
+          rowTemplate = '<tr>' + 
+                        '{{for 4}}' + 
+                        '<td>' + 
+                          '<span class="editableContent">click to edit content</span>' +
+                        '</td>' +
+                        '{{/for}}' + 
+                      '</tr>'; 
+
+          table.setRowTemplate(rowTemplate);
+          
+          addRowButton.addEventListener("click", function() {
+            table.addRows(1);
+            makeElementsEditable(".editableContent");
+          }, false);
+        }, false);
+                                
+        function makeElementsEditable(editableClass) {
+          var elements = getEditableElements(editableClass),
+              i;
+
+          for(i = 0; i < elements.length; i++) {
+            var element = elements[i];
+            element.setAttribute("contenteditable", "");				
+          }			
+        }
+        
+        function getEditableElements(editableClass) {
+          return document.querySelectorAll(editableClass); 
+        }
+        
+        function Table(tableElement) {
+          var rows = 0,
+            _rowTemplate = "",				
+            _tableElement = tableElement;					
+            
+          function addRow() {
+            var procesedRowTemplate = fillTemplate(_rowTemplate);
+            tableElement.querySelector("tbody").insertAdjacentHTML("beforeend", procesedRowTemplate);
+            ++_rows;
+          }					
+            
+          function fillTemplate(template) {
+            // normally there would be some placeholder 
+            // fillup:
+            var processedTemplate = template;
+            processedTemplate = parseForStatements(processedTemplate);
+            console.log(processedTemplate);
+            return processedTemplate;
+          }					
+
+          function parseForStatements(template) {
+            var processedTemplate = template,
+              forStatementMatchRegEx = /\{\{for\ (\d+)\}\}(.*)\{\{\/for\}\}/,
+              matches = processedTemplate.match(forStatementMatchRegEx),
+              LOOPCOUNT = 1,
+              LOOPCONTENT = 2,
+              loops,
+              forStatementContent = "",
+              i;
+            
+            // Check if all placeholders are matched
+            // remember the first element in a match collection
+            // is always the complete matched string:
+            if(matches.length === 3) {
+              loops = matches[LOOPCOUNT];
+              for(i = 0; i < loops; i++) {
+                forStatementContent += matches[LOOPCONTENT];
+              }	
+              processedTemplate = processedTemplate.replace(forStatementMatchRegEx, 
+                forStatementContent);				
+            }
+            return processedTemplate;
+          }													
+            
+          return {
+            getNumberOfRows: function() {
+              return _rows;					
+            },
+            addRows: function(numberOfNewRows) {
+              var i; 
+              for(i = 0; i < numberOfNewRows; i++) {
+                addRow();						
+              }
+            },
+            setRowTemplate: function(rowTemplate) {
+              _rowTemplate = rowTemplate;					
+            }
+          };				 			
+        }
+      }());
+		</script>
+	</body>
+</html>

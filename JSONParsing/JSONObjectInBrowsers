@@ -1,0 +1,10 @@
+The JSON object is reachable on window.JSON
+
+[javascript object] JSON.parse([JSON string to parse])
+Description:
+parse builds a javascript object from a given valid 
+JSON string and returns it.
+
+[JSON string] JSON.stringify([javascript object to create JSON from])
+Description: 
+converts a javascript object to a JSON string and returns it.

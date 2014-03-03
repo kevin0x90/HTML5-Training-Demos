@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Employee Popup</title>
+  </head>
+  <body>
+    <section class="addEmployee">
+      <div class="control">
+        <label for="firstName">Firstname:</label>
+        <input type="text" id="firstName" name="firstName" required
+          pattern="[a-zA-Z]{2,20}" />
+      </div>
+      <div class="control">
+        <label for="lastName">LastName:</label>
+        <input type="text" id="lastName" name="firstName" required
+          pattern="[a-zA-Z]{2,20}" />
+      </div>
+      <div class="control">
+        <label for="position">Position:</label>
+        <input type="text" id="position" name="position" required />
+      </div>
+      <div class="control">
+        <label for="pid">PID:</label>
+        <input type="number" id="pid" name="pid" required pattern="\d*" />
+      </div>
+      <button id="addEmployeeToListButton">Add employee to list</button>
+    </section>
+    <script type="text/javascript">
+      (function () {
+        "use strict";
+
+        function addEmployeeToList() {
+          var employee = {
+            PID: pid,
+            FirstName: document.getElementById("firstName").value,
+            LastName: document.getElementById("lastName").value,
+            Position: document.getElementById("position").value
+          };
+          window.opener.postMessage(JSON.stringify(employee), 
+            "http://localhost/MessageAPI/MessageAPIExample.html");
+          console.log("employee added");
+        }
+  
+        window.addEventListener("load", function () {
+          var addEmployeeToListButton =
+            document.getElementById("addEmployeeToListButton");
+          addEmployeeToListButton.addEventListener("click",
+            addEmployeeToList, false);
+        }, false);
+      }());
+    </script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>Reflection Matrix</title>
+    <script type="text/javascript">      
+      (function () {
+        "use strict";
+
+        CanvasRenderingContext2D.prototype.setMirrorMatrix = function () {
+          this.setTransform(1, 0, 0, -1, 0, 0);
+        };
+
+        window.addEventListener("load", function () {
+            var can = document.getElementById("can"), 
+              ctx = can.getContext("2d");
+
+            ctx.fillStyle = "blue";
+            ctx.font = "48pt Helvetica";
+            ctx.fillText("Reflection", 0, 100);
+
+            ctx.setMirrorMatrix();
+            ctx.scale(1, -1);
+            ctx.fillStyle = "red";
+            ctx.fillText("Reflection", 0, -100);
+        }, false);
+      }());
+    </script>
+  </head>
+  <body>
+    <canvas id="can" height="200" width="300" style="border: 1px solid black;" />
+  </body>
+</html>

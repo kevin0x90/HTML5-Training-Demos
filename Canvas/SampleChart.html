@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chart Demo</title>
+    <style type="text/css">
+      #chartCanvas {
+        width: 600px;
+        height: 600px;
+        border: 2px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="chartCanvas"></canvas>
+    <script type="text/javascript">
+      (function () {
+        "use strict";
+
+        window.requestAnimationFrame = (function () {
+          return window.requestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.webkitRequestAnimationFrame;
+        }());
+
+        function transformToStandardCoordinateSystem(drawingContext,
+          drawingCanvas) {
+          drawingContext.scale(1.0, -1.0);
+          drawingContext.translate(0, -drawingCanvas.height);
+        }
+
+        function chartLegend(drawingContext, drawingCanvas) {
+          var _drawingContext = drawingContext,
+            _drawingCanvas = drawingCanvas;
+
+          return {
+            x: 0,
+            y: 0,
+            legendElementProperties: [],
+            drawLegend: function () {
+              var i,
+                currentObject;
+
+              _drawingContext.save();
+              transformToStandardCoordinateSystem(_drawingContext, _drawingCanvas);
+              _drawingContext.moveTo(this.x, this.y);
+              _drawingContext.lineWidth = 0.5;
+
+              for (i = 0; i < this.legendElementProperties.length; i += 1) {
+                currentObject = this.legendElementProperties[i];
+
+                _drawingContext.fillStyle = currentObject.fillStyle;
+                _drawingContext.font = currentObject.font;
+                _drawingContext.fillText(currentObject.text,
+                  this.x, this.y + (currentObject.marginBottom * i + 1));
+              }
+
+              _drawingContext.restore();
+            }
+          };
+        }
+
+        function transformToCartesianCoordinateSystem(drawingContext,
+          drawingCanvas) {
+          drawingContext.translate(0, drawingCanvas.height - 10);
+          drawingContext.scale(1, -1);
+        }
+
+        function bar(drawingContext) {
+          var _60FPS = 17, // 1000ms / 60 = 17 (rounded)
+            _drawingContext = drawingContext;
+
+          return {
+            width: 0,
+            height: 0,
+            x: 0,
+            y: 0,
+            color: "#ffffff",
+            drawBar: function () {
+              _drawingContext.save();
+              _drawingContext.fillStyle = this.color;
+              _drawingContext.fillRect(this.x, this.y,
+                this.width, this.height);
+              _drawingContext.restore();
+            },
+            animateBarDrawing: function () {
+              var targetHeight = this.height,
+                drawingInterval;
+              this.height = 0;
+
+              drawingInterval = setInterval(function () {
+                if (this.height >= targetHeight) {
+                  clearInterval(drawingInterval);
+                }
+
+                _drawingContext.clearRect(this.x, this.y,
+                  this.width, this.height);
+
+                this.drawBar();
+                this.height += 1;
+              }, _60FPS);
+            },
+            animateBarDrawingRequestAnimationFrame: function () {
+              var that = this,
+                targetHeight = that.height,
+                drawingInterval;
+              that.height = 0;
+
+              drawingInterval = function () {
+                if (that.height <= targetHeight) {
+                  requestAnimationFrame(drawingInterval);
+                }
+
+                _drawingContext.clearRect(that.x, that.y,
+                  that.width, that.height);
+
+                that.drawBar();
+                that.height += 1;
+              };
+              drawingInterval();
+            }
+          };
+        }
+
+        function getRandomRgbColorString() {
+          var rgbColorString = "rgb(",
+            numberOfColorChannels = 3,
+            nextToLastElement = numberOfColorChannels - 1,
+            i;
+
+          for (i = 0; i < numberOfColorChannels; i += 1) {
+            rgbColorString += (Math.floor(Math.random() * 255)).toString();
+            if (i < nextToLastElement) {
+              rgbColorString += ",";
+            }
+          }
+          rgbColorString += ")";
+
+          return rgbColorString;
+        }
+
+        window.addEventListener("load", function () {
+          var drawingCanvas = document.getElementById("chartCanvas"),
+            drawingContext = drawingCanvas.getContext("2d"),
+            i,
+            testBar,
+            diagramLegend = chartLegend(drawingContext, drawingCanvas);
+
+          diagramLegend.x = 5;
+          diagramLegend.y = 20;
+
+          drawingContext.lineWidth = 2.0;
+          transformToCartesianCoordinateSystem(drawingContext, drawingCanvas);
+
+          drawingContext.beginPath();
+          drawingContext.moveTo(0, 0);
+          drawingContext.lineTo(drawingCanvas.width - 10, 0);
+
+          for (i = 1; i <= 5; i += 1) {
+            testBar = bar(drawingContext);
+            testBar.width = 10;
+            testBar.height = Math.floor(Math.random() * 80) + 1;
+            testBar.x = 50 * i;
+            testBar.y = 0;
+            testBar.color = getRandomRgbColorString();
+
+            diagramLegend.legendElementProperties.push({
+              text: "test " + i.toString(),
+              marginBottom: 10,
+              font: "12px Times New Roman",
+              fillStyle: testBar.color
+            });
+
+            testBar.animateBarDrawingRequestAnimationFrame();
+          }
+
+          diagramLegend.drawLegend();
+
+          drawingContext.stroke();
+          drawingContext.closePath();
+        }, false);
+      }());
+    </script>
+  </body>
+</html>

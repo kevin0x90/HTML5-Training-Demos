@@ -1,0 +1,73 @@
+New Formtags 
+<progress> Progressbar whose style depends on the browser implementation
+and the operating system progressbar style. 
+
+<datalist> contains a list of data and can be combined with the other tags 
+eg input elements with the list="" attribute set to a datalist.
+
+<output> can contain values from other tags by "databinding" 
+for example an input has a onchange event then the onchange event 
+can reference the output tag by its id and assign the current value 
+by value.
+
+New Formtag type propertys:
+
+tel for phone numbers (Interesting for Mobile)
+
+search 
+
+email for email addresses (Interesting for Mobile)
+
+datetime shows an build in date time picker if supported
+
+date  shows an build in datepicker if supported
+Specilizations of the build in control:
+{
+	month 
+
+	week 
+
+	time 
+}
+
+number for numbers (Interesting for Mobile) 
+
+range shows an build in slider if supported 
+
+color shows a build in colorpicker if supported
+
+autofocus focuses a control automaticly after page load
+
+placeholder shows a light grey description text that dissapears 
+            after clicking in the control.
+
+form 
+
+required marks a field as required which is indicated 
+         by a build in function depending on the browser 
+         which shows an information if there are required fields.
+	formvalidate 
+	formnovalidate
+
+pattern defines a regex to validate the content of an input element.
+
+novalidate forces the nonvalidation for a form
+
+validation API:
+
+setCustomValidity("") specifies own error messages if a element is not valid
+validity object supports some propertys to check the validity of an element
+
+customError returns true if a custom error message is set
+patternmissmatch returns if the given pattern matches the value
+rangeoverflow returns if an range overflow happened
+rangeunderflow 
+stepmissmatch
+tooLong 
+typeMismatch
+valueMissing 
+valid 
+
+checkValidity() returns if the element contains valid data
+
+

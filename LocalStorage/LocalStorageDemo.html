@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Local storage demo</title>
+    <style type="text/css">
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+    
+      #myNotes {
+        width: 70%;
+        height: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="myNotes" name="myNotes" method="POST">
+      <div>
+        <label for="myName">Name:</label>
+        <input id="myName" name="myName" type="text" required="true" />
+      </div>
+      <div>
+        <label for="myID">ID:</label>
+        <input id="myID" name="myID" type="text" required="true" />
+      </div>
+      <div>
+        <label for="myZipCode">My ZIP Code:</label>
+        <input id="myZipCode" type="number" />
+      </div>
+      <input type="submit"></input>
+    </form>
+    <script type="text/javascript">
+      (function () {
+        "use strict";
+
+        function onSave() {
+          if (!navigator.onLine) {
+            var name = document.getElementById("myName"),
+              id = document.getElementById("myID"),
+              zipCode = document.getElementById("myZipCode");
+  
+            localStorage.setItem("myName", name.value);
+            localStorage.setItem("myID", id.value);
+            localStorage.setItem("myZipCode", zipCode.value);
+          } else {
+            localStorage.clear();
+          }
+        }
+  
+        function loadOfflineSavedData() {
+          var i, 
+            currentKey,
+            elementToFill;
+            
+          if (localStorage.length > 0) {
+            for (i = 0; i < localStorage.length; i += 1) {
+              currentKey = localStorage.key(i);
+              elementToFill = document.getElementById(currentKey);
+              elementToFill.value = localStorage.getItem(currentKey);
+            }
+          }
+        }
+  
+        window.addEventListener("load", function() {
+          var dataForm = null;
+          loadOfflineSavedData();
+          dataForm = document.getElementById("myNotes");
+          dataForm.addEventListener("submit", onSave, false);
+        }, false);
+      }());
+    </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!Doctype html>
+<html>
+  <head>
+    <title>Rotation Demo</title>
+    <script type="text/javascript">
+      (function () {
+        "use strict";
+
+        function CircleWithinRectangle(canvas, clearCanvas) {
+         var circleRadius = 100,
+           oneDegreeInRadian = Math.PI / 180,
+           degrees = 0,	
+           clearCanvasAfterFrame = clearCanvas,
+           circleCenter = {
+             x: (canvas.width / 2) + circleRadius,
+             y: canvas.height / 2 
+           },
+           circleRect = {
+             x: -circleRadius,
+             y: -circleRadius,
+             width: circleRadius * 2,
+             height: circleRadius * 2
+           };
+
+          return {
+            drawCircleAndRect: function (drawingContext, targetCanvas) {
+              if (clearCanvasAfterFrame) {
+                  drawingContext.clearRect(0, 0, targetCanvas.width, 
+                   targetCanvas.height);
+              }
+
+              if (degrees >= 360) {
+                 degrees = 0;
+              }
+
+              drawingContext.save();
+              drawingContext.translate(circleCenter.x, circleCenter.y);
+
+              drawingContext.beginPath();
+              drawingContext.arc(0,
+                0, circleRadius, 0, 360, false);
+
+              drawingContext.rotate(oneDegreeInRadian * degrees);
+              drawingContext.stroke();
+
+              drawingContext.strokeRect(circleRect.x, circleRect.y,
+                circleRect.width, circleRect.height);
+              drawingContext.closePath();
+              drawingContext.restore();
+
+              degrees += 10;
+            }
+          };
+        }
+
+        window.addEventListener("load", function () {
+         var drawingCanvas = document.getElementById("canvas"),
+           drawingContext = canvas.getContext("2d"),
+           testCircleRect = CircleWithinRectangle(drawingCanvas, false);
+
+         testCircleRect.drawCircleAndRect(drawingContext,
+          drawingCanvas);
+
+         setInterval(function () {
+           drawingContext.shadowOffsetX = -2;
+           drawingContext.shadowOffsetY = 5;
+           drawingContext.shadowBlur = 0;
+           drawingContext.shadowColor = "rgba(255, 0, 0, 0.5)";
+
+           testCircleRect.drawCircleAndRect(drawingContext,
+             drawingCanvas);
+         }, 100);
+        }, false);
+      }());
+    </script>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+  </body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Form example</title>
+		<style type="text/css">						
+			.control {
+				float: left;
+				border: 1px solid black;
+				height: 40px;
+				width: 39%;
+				margin-right: 10%;		
+				margin-top: 2%;					
+			}
+			
+			.control label {
+				display: block;
+				float: left;
+				width: 41%;			
+			}
+			
+			.formActionButtons {
+				clear: both;		
+				text-align: right;
+				margin-right: 11%;
+				margin-top: 17%;	
+			}
+			
+			.formActionButtons button {
+				margin-left: 2%;			
+			}
+
+			.PopupLayer {
+				width: 100%;
+				height: 0%;
+				background-image: url(img/TransparentBlackBackground.png);
+				background-repeat: repeat;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				z-index: 3;			
+				display: none;
+			}			
+			
+			.Popup {			
+				background-color: #ffffff;
+				border: 1px solid black;
+				position: absolute;
+				top: 25%;
+				left: 25%;
+				width: 50%;
+				height: 0%;
+				z-index: 10;	
+				display: none;
+				
+				-moz-border-radius: 10px;
+				-chrome-border-radius: 10px;
+				-ms-border-radius: 10px;
+				-webkit-border-radius: 10px;
+				border-radius: 10px;						
+			}
+			
+			.Popup #header {
+				-moz-border-radius: 10px 10px 0px 0px;
+				-chrome-border-radius: 10px 10px 0px 0px;
+				-ms-border-radius: 10px 10px 0px 0px;
+				-webkit-border-radius: 10px 10px 0px 0px;
+				border-radius: 10px 10px 0px 0px;
+				background-color: grey;
+				width: 100%;
+				height: 5%;			
+			}			
+			
+			.Popup #informationText {																							
+				width: 99.5%;
+				height: 70%;	
+				margin-left: 0%;								
+				overflow: auto;	
+				display: block;	
+			}
+			
+			.Popup span {
+				display: block;
+				margin-top: 3%;				
+				margin-left: 3%;			
+			}
+			
+			.PopupControls {
+				display: none;			
+			}
+		</style>
+	</head>
+	<body>
+		<form name="myPersonalData">
+			<div class="control">						
+				<label for="password">Password:</label>
+				<input id="password" name="password" type="text"></input>				
+			</div>
+			<div class="control">						
+				<label for="name">Password repeat:</label>
+				<input id="passWordRepeat" name="passWordRepeat" type="text"></input>				
+			</div>
+			<div class="control">						
+				<label for="name">Name:</label>
+				<input id="name" name="name" type="text"></input>				
+			</div>				
+			<div class="formActionButtons">
+				<button id="Submit">Submit</button>
+				<button id="Cancel">Cancel</button>
+				<button id="Back">Back</button>
+			</div>						
+		</form>		
+		<div class="PopupLayer">
+			<div class="Popup">
+				<div id="header"></div>
+				<span id="informationText">
+					lorem ipsum dolore lkdsjglksgdalkdsajgsadgsagsdg
+					dsagsalkdjglkdsajglkdsajglkdsagjalkdsgjdslkjgadsg
+					dsagdsajglkdsajglksadjglkdsajglkjdsaglkdsajgsgads
+					gslkdagjdsalkgjlkjglksajdglkdsajglkdsajglkdsajgkldsaj
+					sdkglsadjglksjdaglksadjglkdsajgalksdjglksajglkdsajg
+					dsalgjlkdsajglkdsajglkdsajglkdsajgkljdsaglkjsdaglkjdsag
+					sdlkagjsalkdjglkdsajglkdsajglkdsajglkdsajglkdsajgldsakjg
+					dskljglksajglkdsajglksadjglksajgalkdsjgksadjglkdsajg
+					dsakgjsdalkgjsadlkgjasdlkgjdsalkgjsadlkgjsalkdjglkdsjg
+					gakdsljglkdsajglksajglkdsajglkdsajglkdsajglksjdag
+					gkdsaljglksajglkdsajglkdsajglkdsajglkdsajglkdsjgds			
+				</span>
+        <span class="PopupControls">
+          <span>Yes i have read the information: </span>
+          <input type="checkbox" value="false"></input>			
+				</span>			
+			</div>
+		</div>
+		<script type="text/javascript">
+      (function () {
+        "use strict";
+
+        window.addEventListener("load", function() {
+          var popUp = new PopUp(".PopupLayer", ".Popup", ".PopupControls"),
+            submitButton = document.getElementById("Submit"),
+            agreeCheckbox = document.querySelector(".PopupControls > input");			
+        
+          submitButton.addEventListener("click", function() {								
+            popUp.openPopup();
+            return false;
+          }, false);			
+          
+          agreeCheckbox.addEventListener("change", function() {
+            popUp.destroyPopup();
+          }, false);
+        }, false);		
+        
+        function PopUp(popUpLayerClass, popUpClass, popUpControlsClass) {
+          var self = this,			
+            popUpLayer = {
+              width: 100,
+              height: 0,
+              maxHeight: 100,
+              minHeight: 0,
+              rootNode: null				
+            },
+            popUp = {
+              width: 100,
+              height: 0,
+              minHeight: 0,
+              maxHeight: 50,
+              rootNode: null,
+              controlsNode: null				
+            };
+          
+          initDomDependentValues();	
+                  
+          function initDomDependentValues() {					
+            try {
+              popUpLayer.rootNode = document.querySelector(popUpLayerClass);
+              popUp.rootNode = document.querySelector(popUpClass);
+              popUp.controlsNode = document.querySelector(popUpControlsClass);
+            } catch(ex) {
+              throw ex;					
+            }									
+          }								
+          
+          self.openPopup = function() {																												
+            var openAnimation;
+            showElementWithDelay(popUp.controlsNode , 1000);								
+            
+            openAnimation = setInterval(function() {																	
+              if(popUpLayer.height > popUpLayer.maxHeight) {						
+                clearInterval(openAnimation);
+                return;					
+              }
+                      
+              setElementHeightInPercent(popUpLayer.rootNode, popUpLayer.height);
+              setElementHeightInPercent(popUp.rootNode, popUp.maxHeight);
+              popUpLayer.height += 2;											
+            }, 30);
+          };
+          
+          self.destroyPopup = function() {															
+            var closeAnimation;
+            hideElementWithDelay(popUp.controlsNode, 60);													
+            
+            closeAnimation = setInterval(function() {																																	
+              popUp.height = popUpLayer.height / 2;
+              if(popUp.height <= popUp.minHeight) {
+                hideElement(popUp.rootNode);					
+              }				
+            
+              if(popUpLayer.height <= popUpLayer.minHeight) {		
+                hideElement(popUpLayer.rootNode);										
+                clearInterval(closeAnimation);
+                return;					
+              }
+                                                        
+              setElementHeightInPercent(popUpLayer.rootNode, popUpLayer.height);
+              setElementHeightInPercent(popUp.rootNode, popUp.height);
+              popUpLayer.height -= 2;																			
+            }, 30);														
+          };
+          
+          function setElementHeightInPercent(element, height) {
+            element.style.display = "none";
+            element.style.height = height + "%";
+            element.style.display = "block";
+          }
+          
+          function toggleElements(elementList) {
+            var i, 
+              element;
+            for(i = 0; i < elementList.length; i++) {
+              element = elementList[i];					
+              if(element.style.display === "none") {
+                showElement(element);					
+              } else {
+                hideElement(element);
+              }				
+            }
+          }			
+          
+          function hideElementWithDelay(element, delayTime) {
+            setTimeout(function() {
+              hideElement(element); 
+            }, delayTime);			
+          }			
+          
+          function showElementWithDelay(element, delayTime) {
+            setTimeout(function() {
+              showElement(element);
+            }, delayTime);
+          }			
+          
+          function showElement(element) {
+            element.style.display = "block";
+          }
+          
+          function hideElement(element) {
+            element.style.display = "none";
+          }
+        }									
+      }());
+		</script>
+	</body>	
+</html>

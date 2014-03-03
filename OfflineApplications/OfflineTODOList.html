@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html manifest="OfflineTODOList.appcache">
+	<head>		
+		<title>Offlinecache Demo</title>
+		<link rel="stylesheet" href="style.css" />		
+	</head>
+	<body>
+		<section class="userInputSection">					
+			<div class="control">
+				<label for="todoItemEntryControl">New Todolist entry:</label>			
+				<input id="todoItemEntryControl" name="todoItemEntryControl" 
+					placeholder="enter a new todo item..." type="text" />				
+			</div>			 			
+			<button id="addTodoItem" name="addTodoItem">Add item to list</button>
+			<button id="saveTodoItems" name="saveTodoItems">Send todo list to server</button>
+		</section>	
+		<section class="todoListSection">
+			<header>
+				<h3>My Items:</h3>			
+			</header>
+			<ul id="todoList"></ul>
+		</section>
+		<script type="text/javascript" src="main.js"></script>
+	</body>
+</html>

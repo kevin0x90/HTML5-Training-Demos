@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>WebWorker / Socket Sample</title>
+	</head>
+	<body>		
+		<script type="text/javascript">
+      (function () {
+        "use strict";
+        window.addEventListener("load", function () {
+          var worker = new Worker("Worker.js"),
+            incomingMessage = function (eventData) {
+              console.log(eventData.data);
+            };
+
+          worker.addEventListener("message", incomingMessage, false);
+          worker.postMessage("");
+        }, false);
+      }());
+		</script>
+	</body>
+</html>

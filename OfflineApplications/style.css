@@ -1,0 +1,33 @@
+html body {
+	width: 100%;
+	height: 100%;			
+}			
+
+.userInputSection {
+	width: 50%;
+	height: 30%;
+	border: 1px solid black;
+}			
+			
+.control {
+	display: block;
+	margin-bottom: 5%;
+}
+			
+.control label {
+	float: left;
+	margin-right: 3%;
+}
+			
+.todoListSection {
+	display: block;
+	width: 50%;
+	height: 50%;
+	border: 2px solid black;
+	margin-top: 10%;				
+} 					
+			
+.todoListSection ul {
+	width: 100%;
+	height: 100%;				
+}	

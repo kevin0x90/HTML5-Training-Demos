@@ -1,0 +1,9 @@
+DOM API Selectors new in HTML 5
+
+querySelectorAll([css selector])
+Description: 
+returns a array of all matched nodes
+
+querySelector([css selector])
+Description: 
+returns the first node that matches the selector. 

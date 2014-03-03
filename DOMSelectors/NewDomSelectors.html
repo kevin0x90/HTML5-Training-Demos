@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>New DOM Selectors</title>
+    <script type="text/javascript">
+      (function () {
+        "use strict";
+        window.addEventListener("load", function () {
+          var menuItems = document.querySelectorAll("nav ul li"),
+            i,
+            firstMenuItem = document.querySelector("nav ul li");
+            
+          for (i = 0; i < menuItems.length; i += 1) {
+            alert(menuItems[i].firstChild.nodeValue);
+          }
+            
+          alert(firstMenuItem.firstChild.nodeValue);
+        }, false);
+      }());
+    </script>
+  </head>
+  <body>
+    <section>
+      <header>
+        <h2>New Dom Selectors in HTML 5</h2>
+      </header>
+      <nav>
+        <ul>
+          <li>Menu item 1</li>
+          <li>Menu item 2</li>
+        </ul>
+      </nav>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="500" />
+    <script type="text/javascript">
+      (function () {
+        "use strict";
+
+        function getDrawingContext(canvasId, contextMode) {
+          var canvasElement = document.getElementById(canvasId);
+          return canvasElement.getContext(contextMode);
+        }
+
+        function drawCube(drawingContext, size) {
+          var area = size * 4, 
+            x, 
+            y;
+
+          drawingContext.save();
+          drawingContext.beginPath();
+          for (x = 0; x < size; x += 1) {
+            for (y = 0; y < size; y += 1) {
+              drawingContext.moveTo(x, y);
+              drawingContext.lineTo(x, y + 0.5);
+            }
+          }
+          drawingContext.closePath();
+          drawingContext.stroke();
+          drawingContext.restore();
+        }
+
+        window.addEventListener("load", function () {
+          var dc = getDrawingContext("canvas", "2d");
+          dc.moveTo(0, 0);
+          drawCube(dc, 100);
+        }, false);
+       }());
+    </script>
+  </body>
+</html>  

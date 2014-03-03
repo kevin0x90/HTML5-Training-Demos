@@ -1,0 +1,23 @@
+Webworkers are parts of javascript which are processed in an own thread
+then the main page. Threadstarter and thread communicate with a message 
+system. 
+for example:
+
+threadStarter [Message: get a lot of employees and create dynamicly html for each employee]
+	-> thread
+	   thread [Processes the task]
+thread [Message JSON object with the employee informations and the prebuilded html]
+   -> threadStarter
+   
+a web worker has some restrictions which are the following 
+the web worker has no access to the DOM or DOM events.
+
+A web worker can use the following setInterval / setTimeout
+and events depending on the worker itself for example the message event.
+Web worker can also use xmlhttprequest but note you can't use jquery 
+ajax methods in a web worker cause jquery needs access to the DOM which 
+isn't available in a web worker. Workers have access to the navigator object 
+and its propertys and the importScripts function to import additional javascript code 
+in the worker for example librarys. Worker can create sub workers.
+
+self or this is a pointer to the actual web worker instance.     

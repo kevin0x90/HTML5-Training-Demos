@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>WebWorker demo</title>
+    <script type="text/javascript" >
+      (function () {
+        "use strict";
+        window.addEventListener("load", function () {
+          var uiWork = document.getElementById("doSomeUIWork"),
+            doUiWork = function () {
+              var body = document.getElementsByTagName("body")[0],
+                newSpan = document.createElement("span"); 
+
+              body.setAttribute("style", "display: none;");
+              newSpan.setAttribute("style", "display: block;");
+
+              newSpan.appendChild(document.createTextNode("new span node"));
+              body.appendChild(newSpan);
+              body.setAttribute("style", "display: display;");
+            },
+            messageHandler = function (e) {
+              console.log("base thread says hello");
+              consoel.log(e.data);
+            },
+            initWebWorker = function () {
+              var supportMessage = document.getElementById("webWorkerSupported"), 
+                thread = new Worker("worker.js"), 
+                postToWorkerButton = document.getElementById("postToWorker");
+
+              supportMessage.innerHTML = "WebWorkers are supported!";
+              thread.addEventListener("message", messageHandler, false); 
+              postToWorkerButton.addEventListener("click", function () {
+                thread.postMessage("Message from base thread");
+              }, false);
+            };
+
+          uiWork.addEventListener("click", doUiWork, false); 
+        
+          if (typeof(Worker) !== "undefined") {
+            initWebWorker();
+          }				
+        }, false);
+      }());
+		</script>	
+	</head>
+	<body>
+		<p id="webWorkerSupported"></p>
+		<button id="postToWorker">Post message to worker</button>
+		<button id="doSomeUIWork">Do UI Work</button>
+	</body>
+</html>

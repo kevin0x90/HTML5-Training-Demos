@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RequestAnimationFrame</title>	
+  </head>
+  <body>
+    <canvas id="drawingCanvas" width="400" height="400" />
+    <script type="text/javascript">
+      (function () {
+        "use strict";
+
+        function SampleRenderer(drawingContext) {
+          var _drawingContext = drawingContext,
+            _x = 0,
+            _y = 0,
+            self = {
+              render: function (time, number) {
+                if (_x <= 200 && _y <= 200) {
+                  requestAnimationFrame(self.render, number);
+                }
+                _drawingContext.clearRect(_x - 50, _y - 50, 50, 50);
+                _x += 1;
+                _y += 1;
+                _drawingContext.fillStyle = "red";
+                _drawingContext.fillRect(_x, _y, 50, 50);
+                console.log(number);
+              }
+            };
+
+          return self;
+        }
+
+        window.addEventListener("load", function() {
+          var drawingCanvas = document.getElementById("drawingCanvas"),
+            drawingContext = drawingCanvas.getContext("2d");
+
+          drawingContext.beginPath();
+          SampleRenderer(drawingContext)
+            .render(0, 100);
+          drawingContext.closePath();
+        }, false);
+      }());
+    </script>
+  </body>
+</html>

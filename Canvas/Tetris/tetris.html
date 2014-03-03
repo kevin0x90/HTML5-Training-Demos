@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+   <head>   
+      <title>Tetris</title>
+      <meta charset="utf-8" />	
+      <style type="text/css">
+         canvas {
+            border: 1px solid black;			
+         }
+      </style>
+   </head>
+   <body>
+      <canvas id="gameField" width="400" height="400" />
+      <script type="text/javascript" src="js/requestAnimationFrame.js"></script>
+      <script type="text/javascript" src="js/KeyBoardHandler.js"></script>      
+      <script type="text/javascript" src="js/GameField.js"></script>		
+      <script type="text/javascript" src="js/GameScore.js"></script>
+      <script type="text/javascript" src="js/BaseBlock.js"></script>
+      <script type="text/javascript">				            		      			      		      					
+         window.addEventListener("load", function() {
+            init();            
+            var initFrameTime = new Date().getTime();
+            gameLoop(initFrameTime);				
+         }, false);						
+			
+			var keyBoard = null;
+         var tetrisField = null;
+         var tetrisScore = null;
+         var testBlock1 = null;			                  
+         var FPS = 1000.0 / 1.0;
+         var previousFrameTime = 0;
+         function init() {				                  
+            tetrisField = gameField({
+               context: "2d",
+               canvasId: "gameField",
+               width: 200,
+               height: 380,
+               leftMargin: 10,
+               topMargin: 10,
+               FPS: 30.0
+            });                        
+            
+            tetrisScore = gameScore({
+            	leftMargin: 250,
+            	topMargin: 60,
+            	color: "green",
+            	drawingContext: tetrisField.getDrawingContext(),
+            	FPS: 1.0            	
+            });                       				
+				
+				keyBoard = keyBoardHandler(window);												
+         }																												
+			
+         function gameLoop(frameTime) {           			       	         	
+            tetrisField.update(frameTime);
+            tetrisField.draw(frameTime);                    
+            tetrisScore.update(frameTime);										
+            requestAnimationFrame(gameLoop);	            		
+         }
+      </script>
+   </body>
+</html>
